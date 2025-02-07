@@ -9,7 +9,7 @@ export async function fetchCampaignData(campaignId) {
           // console.log('response:', response.data.campaign.initialLayout.campaign);
           const campaign = response.data.campaign.initialLayout.campaign
           const layouts = response.data.campaign.layouts
-          console.log(layouts);
+         
           
           return {
             campaignData: {

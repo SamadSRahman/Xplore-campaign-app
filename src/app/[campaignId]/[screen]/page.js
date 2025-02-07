@@ -6,9 +6,7 @@ export default async function page({params}) {
   const { campaignId, screen } =   params;
   console.log(campaignId, screen);
    const {campaignData, layouts} = await fetchCampaignData(campaignId);
-    console.log(campaignData);
-    
-      console.log(layouts);
+  
       
     if (!campaignData) {
       // If no data is found, you can trigger a 404 page.
