@@ -4,6 +4,7 @@ import { fetchCampaignData } from "../utils";
 import Preview from "@/components/Preview/Preview";
 import Head from "next/head";
 
+
 export const revalidate = 10;
 // Your page component fetches its data directly. Note that the component is async.
 export default async function CampaignPage({ params }) {
@@ -22,7 +23,7 @@ export default async function CampaignPage({ params }) {
 
   return (
     <>
-      <head>
+      <Head>
         <title>{campaignData.title}</title>
         <meta name="description" content={campaignData.description} />
         <meta property="og:title" content={campaignData.title} />
@@ -39,7 +40,7 @@ export default async function CampaignPage({ params }) {
              href="https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip"
            />
     
-      </head>
+      </Head>
       <main>
         <Preview campaignId={campaignId} layouts={layouts} />
       </main>
