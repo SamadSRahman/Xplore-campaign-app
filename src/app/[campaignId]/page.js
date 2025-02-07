@@ -1,4 +1,5 @@
 // src/app/campaign/[campaignId]/page.js
+import axios from "axios";
 import { notFound } from "next/navigation";
 
 // This function is used to define which dynamic routes should be pre-rendered.
@@ -12,7 +13,7 @@ export async function generateStaticParams() {
 
 // Your page component fetches its data directly. Note that the component is async.
 export default async function CampaignPage({ params }) {
-  const { campaignId } = params;
+  const  { campaignId } = await params;
 
   // Fetch your campaign data; this can be an API call or database query.
   const campaignData = await fetchCampaignData(campaignId);
@@ -54,21 +55,19 @@ async function fetchCampaignList() {
 
 async function fetchCampaignData(campaignId) {
   // Replace this with your actual API call.
-  const dummyCampaigns = {
-    1: {
-      title: "Campaign One",
-      description: "This is the first campaign.",
-      content: "Details about Campaign One…",
-      image:
-        "https://res.cloudinary.com/dljvlt6tu/image/upload/v1737481020/dc0397a8f7a787db306f72e3e3065a54_1_fgzs2o.png",
-    },
-    2: {
-      title: "Campaign Two",
-      description: "This is the second campaign.",
-      content: "Details about Campaign Two…",
-      image:
-        "https://res.cloudinary.com/dljvlt6tu/image/upload/v1728362745/OnePlus7T1.jpg",
-    },
-  };
-  return dummyCampaigns[campaignId] || null;
+
+    try {
+        const response = await axios.get(`https://pre.xplore.xircular.io/api/v1/viewLayout/${campaignId}`);
+        console.log('response:', response.data.campaign.initialLayout.campaign);
+        const campaign = response.data.campaign.initialLayout.campaign
+        const metaData = {
+            title: campaign.name,
+            description: campaign.description,
+            image: campaign.images[0].url,
+        }
+        return metaData;
+    } catch (error) {
+        console.error(error)
+    }
+
 }
