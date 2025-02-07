@@ -57,7 +57,7 @@ async function fetchCampaignData(campaignId) {
   // Replace this with your actual API call.
 
     try {
-        const response = await axios.get(`https://pre.xplore.xircular.io/api/v1/viewLayout/${campaignId}`);
+        const response = await axios.get(`https://xplr.live/api/v1/viewLayout/${campaignId}`);
         console.log('response:', response.data.campaign.initialLayout.campaign);
         const campaign = response.data.campaign.initialLayout.campaign
         const metaData = {
