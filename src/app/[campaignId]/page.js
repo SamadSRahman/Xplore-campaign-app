@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { fetchCampaignData } from "../utils";
 
 export default async function CampaignPage({ params }) {
@@ -7,6 +7,21 @@ export default async function CampaignPage({ params }) {
 
   if (!campaignData) {
     notFound();
+  }
+
+  const splashScreenLayout = layouts.find((layout) => layout.name === "splash_screen");
+
+  // 2️⃣ If "splash_screen" exists, redirect to it
+  if (splashScreenLayout) {
+    redirect(`/${campaignId}/splash_screen`);
+  }
+
+  // 3️⃣ If "splash_screen" does not exist, find the initial layout
+  const initialLayout = layouts.find((layout) => layout.isInitial === true);
+
+  // 4️⃣ If an initial layout exists, redirect to it
+  if (initialLayout) {
+    redirect(`/${campaignId}/${initialLayout.name}`);
   }
 
   return (
