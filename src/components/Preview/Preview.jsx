@@ -16,7 +16,7 @@ import { blankBackgroundJSON } from "@/app/utils";
 import RedirectionPage from "../RedirectionPage/RedirectionPage";
 import Head from "next/head";
 
-export default function Preview({ campaignId, layouts, campaignData }) {
+export default function Preview({ campaignId, layouts }) {
   const params = useParams();
   const router = useRouter();
   //   const { postAnalyticData } = useAnalytics();
@@ -179,23 +179,7 @@ export default function Preview({ campaignId, layouts, campaignData }) {
 
   return (
     <div className={styles.container}>
-          <Head>
-        <title>{campaignData.title}</title>
-        <meta name="description" content={campaignData.description} />
-        <meta property="og:title" content={campaignData.title} />
-        <meta property="og:description" content={campaignData.description} />
-        <meta property="og:image" content={campaignData.image} />
-        <meta
-          name="apple-itunes-app"
-          content="app-clip-bundle-id=com.xircular.XplorePromote.Clip, app-clip-display=card"
-        />
-        <meta name="appstore:bundle_id" content="com.xircular.xplorecampaign" />
-        <meta name="appstore:store_id" content="com.xircular.xplorecampaign" />
-        <link
-          rel="canonical"
-          href="https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip"
-        />
-      </Head>
+        
       {showRedirectionPage ? (
         <RedirectionPage link={redirectUrl} />
       ) : (
