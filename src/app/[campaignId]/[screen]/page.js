@@ -1,6 +1,5 @@
 import { fetchCampaignData } from '@/app/utils';
 import Preview from '@/components/Preview/Preview'
-import Head from 'next/head';
 import React from 'react'
 
 export default async function page({params}) {
