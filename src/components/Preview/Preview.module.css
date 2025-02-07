@@ -1,0 +1,141 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    background-color: white;
+}
+.cardWrapper{
+    width: 375px;
+    height: 100vh;
+    
+}
+
+@media screen and (max-width: 480px) {
+    .cardWrapper {
+        width: 100%;
+    }
+}
+.popupOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.popup {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+}
+
+.popup h2 {
+    margin: 0 0 1rem;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.popup p {
+    margin-bottom: 1.5rem;
+    color: #666;
+}
+
+.popupButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+}
+
+@media screen and (max-width: 480px) {
+    .popupButtons {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+.googleButton {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.googleButton:hover {
+    background-color: #357abd;
+}
+
+.skipButton {
+    background-color: transparent;
+    color: #666;
+    border: 1px solid #ccc;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.skipButton:hover {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.loader {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4285f4;
+}
+
+/* Disable the skip button when loading */
+.skipButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.redirectContainer{
+    width: 100vw;
+    color: black;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.redirectContent{
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+}
+.redirectContent>img{
+    width: 8rem;
+}
+
+.redirectButton{
+    background-color: #896BF0;
+    padding: 10px 22px;
+    font-size: 1.25rem;
+    border-radius: 8px;
+    color: white;
+    border: none;
+}

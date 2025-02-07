@@ -1,0 +1,11 @@
+/* src/components/ChatBox/ChatBox.module.css */
+.chatBox {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    overflow-y: auto;
+    height: calc(100vh - 12rem); /* Adjust height for header and input box */
+    background-color: #ffffff;
+  }
+  

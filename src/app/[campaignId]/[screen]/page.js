@@ -1,28 +1,23 @@
-// src/app/campaign/[campaignId]/page.js
-import { notFound } from "next/navigation";
-import { fetchCampaignData } from "../utils";
-import Preview from "@/components/Preview/Preview";
-import Head from "next/head";
+import { fetchCampaignData } from '@/app/utils';
+import Preview from '@/components/Preview/Preview'
+import Head from 'next/head';
+import React from 'react'
 
-export const revalidate = 10;
-// Your page component fetches its data directly. Note that the component is async.
-export default async function CampaignPage({ params }) {
-  const { campaignId } = params;
-
-  //   Fetch your campaign data; this can be an API call or database query.
-  const { campaignData, layouts } = await fetchCampaignData(campaignId);
-  console.log(campaignData);
-
-  console.log(layouts);
-
-  if (!campaignData) {
-    // If no data is found, you can trigger a 404 page.
-    notFound();
-  }
-
+export default async function page({params}) {
+  const { campaignId, screen } =   params;
+  console.log(campaignId, screen);
+   const {campaignData, layouts} = await fetchCampaignData(campaignId);
+    console.log(campaignData);
+    
+      console.log(layouts);
+      
+    if (!campaignData) {
+      // If no data is found, you can trigger a 404 page.
+      notFound();
+    }
   return (
     <>
-      <head>
+         <head>
         <title>{campaignData.title}</title>
         <meta name="description" content={campaignData.description} />
         <meta property="og:title" content={campaignData.title} />
@@ -38,11 +33,8 @@ export default async function CampaignPage({ params }) {
              rel="canonical"
              href="https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip"
            />
-    
       </head>
-      <main>
-        <Preview campaignId={campaignId} layouts={layouts} />
-      </main>
+        <Preview campaignId={campaignId} layouts={layouts} campaignData={campaignData}  />
     </>
-  );
+  )
 }

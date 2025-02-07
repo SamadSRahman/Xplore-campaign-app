@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import DivkitRenderer from "@/components/DivkitRenderer/DivkitRenderer";
 
 export default function Home() {
   return (
@@ -45,6 +46,7 @@ export default function Home() {
             Read our docs
           </a>
         </div>
+        <DivkitRenderer divkitJson={sampleJSON} />
       </main>
       <footer className={styles.footer}>
         <a

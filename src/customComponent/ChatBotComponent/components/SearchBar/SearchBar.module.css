@@ -1,0 +1,42 @@
+/* src/components/SearchBar/SearchBar.module.css */
+.searchBar {
+  width: 90%;
+  display: flex;
+  margin: auto;
+  align-items: flex-end;
+  padding: 8px 10px;
+  background-color: oklch(0.25 0 0);
+  border-radius: 0.5rem;
+  border: 1px solid #454444;
+  gap: 0.3rem;
+}
+
+.input {
+  font-family: inherit;
+  color: white;
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+  /* border: 1px solid #ddd; */
+  /* border-radius: 8px; */
+  margin-right: 8px;
+  outline: none;
+  max-width: 100%;
+  
+  border: none;
+  height: max-content;
+  background-color: transparent;
+}
+
+  .searchButton{
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: rgb(55, 55, 53);
+    color: oklch(0.65 0.01 0);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

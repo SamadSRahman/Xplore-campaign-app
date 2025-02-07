@@ -1,0 +1,29 @@
+.container{
+    /* max-width: 300px; */
+    max-height: 100vh;
+    border: 1px solid white;
+    /* padding: 10px; */
+    overflow: hidden;
+    background-color: white;
+    color: black;
+    height: 95vh;
+    padding-top: 1rem;
+}
+.renderDiv::-webkit-scrollbar{
+    display: none !important;
+}
+.renderDiv{
+    background-color: white;
+    color: black;
+    max-height: 95vh;
+    overflow-y: scroll;
+    /* border: 1px solid blue; */
+    min-height: 90vh;
+    height: 95vh;
+    /* padding-top: 1rem; */
+    margin-bottom: 1rem;
+}
+.renderDiv >div{
+    min-height: 95vh;
+    /* overflow: scroll; */
+}

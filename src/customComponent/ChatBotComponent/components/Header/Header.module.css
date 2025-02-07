@@ -1,0 +1,30 @@
+/* src/components/Header/Header.module.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+   
+    background-color: oklch(0.21 0 0);
+    box-shadow: 0px 2px 5px rgb(255 255 255 / 30%);    ;
+    /* border-bottom: 1px solid #2b2b2b; */
+    z-index: 10;
+    position: sticky;
+    top: 0rem;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .icons {
+    display: flex;
+    gap: 16px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: oklch(0.3 0 0);
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+  
