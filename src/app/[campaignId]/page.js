@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { fetchCampaignData } from "../utils";
 import ClientRedirect from "../../components/ClientRedirect";
 import { headers } from "next/headers";
+import Head from "next/head";
 
 // Metadata generation
 export async function generateMetadata({ params }) {
@@ -75,5 +76,19 @@ export default async function CampaignPage({ params }) {
   }
 
   // Render the page with a client-side redirect component if needed.
-  return <ClientRedirect redirectPath={redirectPath} />;
+  // return <ClientRedirect redirectPath={redirectPath} />;
+  return <>
+    <head >
+    <meta
+          name="apple-itunes-app"
+          content="app-clip-bundle-id=com.xircular.XplorePromote.Clip, app-clip-display=card"
+        />
+        
+        <link
+          rel="canonical"
+          href="https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip"
+        />
+    </head>
+    <ClientRedirect redirectPath={redirectPath}/>
+  </>
 }
