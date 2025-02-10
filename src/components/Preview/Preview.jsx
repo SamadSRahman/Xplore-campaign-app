@@ -16,7 +16,7 @@ import { blankBackgroundJSON } from "@/app/utils";
 import RedirectionPage from "../RedirectionPage/RedirectionPage";
 import Head from "next/head";
 
-export default function Preview({ campaignId, layouts }) {
+export default function Preview({ campaignId, layouts, campaignData }) {
   const params = useParams();
   const router = useRouter();
   //   const { postAnalyticData } = useAnalytics();
@@ -181,7 +181,7 @@ export default function Preview({ campaignId, layouts }) {
     <div className={styles.container}>
         
       {showRedirectionPage ? (
-        <RedirectionPage link={redirectUrl} />
+        <RedirectionPage link={redirectUrl} metaData={campaignData} />
       ) : (
         <div className={styles.cardWrapper}>
           {showPopup && (

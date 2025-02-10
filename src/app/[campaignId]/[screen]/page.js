@@ -33,7 +33,7 @@ export default async function page({ params }) {
           href="https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip"
         />
       </head>
-      <Preview campaignId={campaignId} layouts={layouts} />
+      <Preview campaignId={campaignId} layouts={layouts}  campaignData={campaignData}/>
 
      </RootLayout>
     </>
