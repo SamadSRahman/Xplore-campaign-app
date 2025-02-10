@@ -21,6 +21,10 @@ export async function generateMetadata({ params }) {
     icons: {
       icon: campaignData.image,
     },
+    appleItunesApp: {
+      "app-clip-bundle-id": "com.xircular.XplorePromote.Clip",
+      "app-clip-display": "card",
+    },
   };
 }
 
