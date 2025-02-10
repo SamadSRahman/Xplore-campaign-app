@@ -1,23 +1,9 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-import { fetchCampaignData } from "./utils";
-import Preview from "@/components/Preview/Preview";
+import { redirect } from 'next/navigation';
 
-export default async function Home() {
-  let campaignId ="tnslpvfpp";
-  
-    const {campaignData, layouts} = await fetchCampaignData(campaignId);
-    console.log(campaignData, layouts)
-  
+export default function Home() {
+  // Perform the redirect
+  redirect('/tnslpvfpp/splash_screen');
 
-  return (
-    <>
-    <head>
-
-    </head>
-    <main>
-      <Preview campaignData={campaignData} layouts={layouts} campaignId={campaignId} />
-    </main>
-    </>
-  );
+  // The component can return null or a placeholder since it will be redirected
+  return null;
 }
