@@ -8,7 +8,7 @@ export default function RedirectionPage({link, metaData, isSocial}) {
 
   useEffect(()=>{
     if(anchorRef.current){
-      anchorRef.current.click();
+      // anchorRef.current.click();
     }
   }, [link, anchorRef]);
 

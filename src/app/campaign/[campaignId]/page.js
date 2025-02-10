@@ -72,3 +72,32 @@ async function fetchCampaignData(campaignId) {
   };
   return dummyCampaigns[campaignId] || null;
 }
+
+
+// app/[campaignId]/page.js
+// import { headers } from "next/headers";
+// import { redirect } from "next/navigation";
+
+// export default function CampaignPage({ params, searchParams }) {
+//   const { campaignId } = params;
+
+//   // Check if the user is on an iOS device
+//   const userAgent = headers().get("user-agent");
+//   const isiOS = /iPhone|iPad|iPod/.test(userAgent);
+
+//   if (isiOS) {
+//     // Redirect to the App Clip URL with the campaignId as a query parameter
+//     redirect(
+//       `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${campaignId}`
+//     );
+//   }
+
+//   // Fallback for non-iOS devices
+//   return (
+//     <div>
+//       <h1>Campaign: {campaignId}</h1>
+//       <p>This page is for non-iOS devices.</p>
+//     </div>
+//   );
+// }
+//https://6sl238rs-3000.inc1.devtunnels.ms/campaign/gcit2iw4h
