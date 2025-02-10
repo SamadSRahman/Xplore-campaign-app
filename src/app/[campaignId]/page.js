@@ -51,11 +51,11 @@ export default async function CampaignPage({ params }) {
   const isChrome = /CriOS/.test(userAgent);
 
   // If on iOS and not using Chrome, perform the App Clip redirect.
-  if (isiOS && !isChrome) {
-    redirect(
-      `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${campaignId}`
-    );
-  }
+  // if (isiOS && !isChrome) {
+  //   redirect(
+  //     `https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip&shortId=${campaignId}`
+  //   );
+  // }
 
   // Determine the redirect path based on layouts for client-side redirection
   const splashScreenLayout = layouts?.find(
