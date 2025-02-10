@@ -56,7 +56,7 @@ export default function Preview({ campaignId, layouts, campaignData }) {
       if (initialLayout) {
         setTimeout(() => {
           router.push(`/${campaignId}/${initialLayout.name}`);
-        }, 2000);
+        }, 1000);
       } else {
         console.log("No initial screen found");
       }

@@ -18,7 +18,7 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
       <main>
         <div className="container">
           <img src="https://res.cloudinary.com/dljvlt6tu/image/upload/v1739165845/curved-red-arrow-png_ucehfm.png" alt="" className="arrow-image" />
-          <div className="content-section">
+          {/* <div className="content-section">
             <div className="card">
               <div className="welcome-header">
                 <h1 className="welcome-title">Welcome</h1>
@@ -49,7 +49,7 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
                 </a>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
     </>
