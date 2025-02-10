@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import "./styles.css";
-import Head from "next/head";
+import arrow from '../../assets/curved-red-arrow-png.png'
 
 export default function RedirectionPage({ link, metaData, isSocial }) {
   const anchorRef = useRef();
@@ -15,18 +15,9 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
 
   return (
     <>
-      <Head>
-        <meta
-          name="apple-itunes-app"
-          content="app-clip-bundle-id=com.xircular.XplorePromote.Clip, app-clip-display=card"
-        />
-        <link
-          rel="canonical"
-          href="https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip"
-        />
-      </Head>
       <main>
         <div className="container">
+          <img src="https://res.cloudinary.com/dljvlt6tu/image/upload/v1739165845/curved-red-arrow-png_ucehfm.png" alt="" className="arrow-image" />
           <div className="content-section">
             <div className="card">
               <div className="welcome-header">

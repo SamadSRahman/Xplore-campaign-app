@@ -197,8 +197,25 @@ color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(137, 107, 240, 0.3);
 }
+.arrow-image{
+  width: 10rem;
+    position: absolute;
+    right: -1rem;
+    top: 2rem;
+    animation: hoverAnimation 2s infinite ease-in-out ;
+}
 
 /* Animations */
+
+@keyframes hoverAnimation {
+  0%, 100% {
+    transform: translateY(0); /* Start and end at the original position */
+  }
+  50% {
+    transform: translateY(-10px); /* Move up by 10px */
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

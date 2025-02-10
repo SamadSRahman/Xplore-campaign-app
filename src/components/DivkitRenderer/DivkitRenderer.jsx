@@ -4,15 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 import styles from "./DivkitRenderer.module.css";
 
-import { lottieExtensionBuilder,   } from "@divkitframework/divkit/client";
+import { lottieExtensionBuilder } from "@divkitframework/divkit/client";
 import Lottie from "lottie-web/build/player/lottie";
-import {render} from '@divkitframework/divkit/client'
-import '@divkitframework/divkit/dist/client.css';
+import { render } from "@divkitframework/divkit/client";
+import "@divkitframework/divkit/dist/client.css";
 import ChatBotComponent from "@/customComponent/ChatBotComponent/ChatBotComponent";
 import Image360Viewer from "@/customComponent/ImageViewer/ImageViewer";
 const DivkitRenderer = ({ divkitJson, onClick }) => {
-    
-    
   const extensions = new Map();
   extensions.set("lottie", lottieExtensionBuilder(Lottie.loadAnimation));
   const divkitContainer = useRef(null);
@@ -60,6 +58,12 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
       class ChatbotCardElement extends HTMLElement {
         connectedCallback() {
           const container = document.createElement("div");
+          // container.style.position = "relative"
+          // container.style.padding = "1rem"
+          // container.style.backgroundColor = "red"
+          // container.style.border = "1px solid blue"
+          container.style.zIndex = "1000"
+
           this.appendChild(container);
           ReactDOM.createRoot(container).render(<ChatBotComponent />);
         }
@@ -116,7 +120,9 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
     };
   }, [divkitJson]);
 
-  return <div id="divkit-root" className={styles.renderDiv} ref={divkitContainer} />;
+  return (
+    <div id="divkit-root" className={styles.renderDiv} ref={divkitContainer} />
+  );
 };
 
 export default DivkitRenderer;

@@ -32,7 +32,7 @@ export default async function CampaignPage({ params }) {
         <meta property="og:description" content={campaignData.description} />
         <meta property="og:image" content={campaignData.image} />
       
-        {/* Add additional meta tags as needed */}
+        
       </head>
       <main>
         <h1>{campaignData.title}</h1>
