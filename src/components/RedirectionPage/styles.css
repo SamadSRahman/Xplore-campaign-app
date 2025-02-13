@@ -31,12 +31,27 @@
     width: 99%;
     object-fit: contain;
   }
-  .campaign-card>p{
+  .footer-section>span{
     color: black;
-    text-align: center;
+    text-align: left;
     font-size: 25px;
-    margin-top: 1rem;
+    width: min-content;
+      min-width: 12rem;
     font-weight: 600;
+  }
+  .footer-section > img{
+    width: 3.5rem;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background: white;
+    padding: 0.5rem;
+  }
+  .footer-section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   gap: 2rem;
+    margin-top: 2rem;
   }
   .card {
     background: rgba(255, 255, 255, 0.9);

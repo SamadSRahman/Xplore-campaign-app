@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef } from "react";
 import "./styles.css";
-import arrow from '../../assets/curved-red-arrow-png.png'
+// import arrow from '../../assets/arrow-ios-forward.png'
+import arrow from '../../assets/arrow-ios-forward.png'
 
 export default function RedirectionPage({ link, metaData, isSocial }) {
   const anchorRef = useRef();
@@ -64,7 +65,10 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
                 </a>
               <div onClick={handlePlaceHolderClick} className="campaign-card">
                 <img src={metaData.image} alt="" />
-                <p>Click to Explore</p>
+               <div className="footer-section">
+               <span>Tap to open the experience</span>
+               <img src={"https://xplore.objectstore.e2enetworks.net/1739430199366-1250e107bc85cff3.png"} alt="" />
+               </div>
 
               </div>
         </div>
