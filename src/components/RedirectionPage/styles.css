@@ -46,6 +46,9 @@
     background: white;
     padding: 0.5rem;
   }
+  .spinner{
+    width: 3rem;
+  }
   .footer-section{
     display: flex;
     align-items: center;

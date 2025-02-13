@@ -1,9 +1,7 @@
 "use-client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./styles.css";
-// import arrow from '../../assets/arrow-ios-forward.png'
-import arrow from '../../assets/arrow-ios-forward.png'
 
 export default function RedirectionPage({ link, metaData, isSocial }) {
   const anchorRef = useRef();
@@ -13,11 +11,12 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
       // anchorRef.current.click();
     }
   }, [link, anchorRef]);
-  function handlePlaceHolderClick(){
+  function handlePlaceHolderClick() {
     if (anchorRef.current) {
       anchorRef.current.click();
     }
   }
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   return (
     <>
       <main>
@@ -55,22 +54,41 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
               </div>
             </div>
           </div> */}
-           <a
-                  ref={anchorRef}
-                  href={link}
-                  target={isSocial ? "_blank" : ""}
-                  className="continue-button"
-                >
-                  Continue
-                </a>
-              <div onClick={handlePlaceHolderClick} className="campaign-card">
-                <img src={metaData.image} alt="" />
-               <div className="footer-section">
-               <span>Tap to open the experience</span>
-               <img src={"https://xplore.objectstore.e2enetworks.net/1739430199366-1250e107bc85cff3.png"} alt="" />
-               </div>
-
+          <a
+            ref={anchorRef}
+            href={link}
+            target={isSocial ? "_blank" : ""}
+            className="continue-button"
+          >
+            Continue
+          </a>
+         
+            <img
+              src={
+                "https://xplore.objectstore.e2enetworks.net/1739431486249-ef06a1444d3411be.gif"
+              }
+              className="spinner"
+              alt=""
+              hidden={isImageLoaded}
+            />
+         
+            <div hidden={!isImageLoaded} onClick={handlePlaceHolderClick} className="campaign-card">
+              <img
+                src={metaData.image}
+                alt=""
+                onLoad={() => setIsImageLoaded(true)}
+              />
+              <div className="footer-section">
+                <span>Tap to open the experience</span>
+                <img
+                  src={
+                    "https://xplore.objectstore.e2enetworks.net/1739430199366-1250e107bc85cff3.png"
+                  }
+                  alt=""
+                />
               </div>
+            </div>
+       
         </div>
       </main>
     </>
