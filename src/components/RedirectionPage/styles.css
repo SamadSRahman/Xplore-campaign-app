@@ -14,7 +14,12 @@
     max-width: 480px;
     animation: fadeIn 0.6s ease-out;
   }
-  
+  .placeholderImg{
+    margin: auto;
+    width: 97%;
+    object-fit: contain;
+    border-radius: 10px;
+  }
   .card {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
@@ -109,6 +114,7 @@
     cursor: pointer;
     text-align: center;
     margin-top: 1rem;
+    display: none;
   }
   
   .continue-button:hover {

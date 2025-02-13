@@ -12,12 +12,16 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
       // anchorRef.current.click();
     }
   }, [link, anchorRef]);
-
+  function handlePlaceHolderClick(){
+    if (anchorRef.current) {
+      anchorRef.current.click();
+    }
+  }
   return (
     <>
       <main>
         <div className="container">
-          <img src="https://res.cloudinary.com/dljvlt6tu/image/upload/v1739165845/curved-red-arrow-png_ucehfm.png" alt="" className="arrow-image" />
+          {/* <img src="https://res.cloudinary.com/dljvlt6tu/image/upload/v1739165845/curved-red-arrow-png_ucehfm.png" alt="" className="arrow-image" /> */}
           {/* <div className="content-section">
             <div className="card">
               <div className="welcome-header">
@@ -50,6 +54,15 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
               </div>
             </div>
           </div> */}
+           <a
+                  ref={anchorRef}
+                  href={link}
+                  target={isSocial ? "_blank" : ""}
+                  className="continue-button"
+                >
+                  Continue
+                </a>
+          <img onClick={handlePlaceHolderClick} className="placeholderImg" src="https://xplore.objectstore.e2enetworks.net/1739428073622-fa3b5e8bf5d38858.png" alt="" />
         </div>
       </main>
     </>

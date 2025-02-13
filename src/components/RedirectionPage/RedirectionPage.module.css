@@ -189,6 +189,7 @@ color: #fff;
   border: none;
   cursor: pointer;
   text-align: center;
+  display: none;
 }
 
 .continue-button:hover {
