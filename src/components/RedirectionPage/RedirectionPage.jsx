@@ -62,7 +62,7 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
                 >
                   Continue
                 </a>
-              <div className="campaign-card">
+              <div onClick={handlePlaceHolderClick} className="campaign-card">
                 <img src={metaData.image} alt="" />
                 <p>Click to Explore</p>
 
