@@ -62,7 +62,11 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
                 >
                   Continue
                 </a>
-          <img onClick={handlePlaceHolderClick} className="placeholderImg" src="https://xplore.objectstore.e2enetworks.net/1739428073622-fa3b5e8bf5d38858.png" alt="" />
+              <div className="campaign-card">
+                <img src={metaData.image} alt="" />
+                <p>Click to Explore</p>
+
+              </div>
         </div>
       </main>
     </>

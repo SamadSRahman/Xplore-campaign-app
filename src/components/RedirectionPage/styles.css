@@ -20,6 +20,24 @@
     object-fit: contain;
     border-radius: 10px;
   }
+  .campaign-card{
+
+    width: 97%;
+    height: 90%;
+    margin: auto;
+    border-radius: 10px;
+  }
+  .campaign-card > img{
+    width: 99%;
+    object-fit: contain;
+  }
+  .campaign-card>p{
+    color: black;
+    text-align: center;
+    font-size: 25px;
+    margin-top: 1rem;
+    font-weight: 600;
+  }
   .card {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
