@@ -34,7 +34,7 @@ export default function Preview({ campaignId, layouts, campaignData }) {
       setRedirectUrl(
         `${appClipURL}&shortId=${campaignId}&sourcename=${enviroment.platform}`
       );
-      // setShowRedirectionPage(true);
+      setShowRedirectionPage(true);
     } else {
       //   getLayoutByShortId(campaignId);
     }
@@ -45,7 +45,7 @@ export default function Preview({ campaignId, layouts, campaignData }) {
   //       postAnalyticData({
   //         campaignID: campaignId,
   //         source: enviroment.platform === "browser" ? "other" : enviroment.platform,
-  //       });
+  //       });    
   //     }
   //   }, [campaignId]);
 
