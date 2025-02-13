@@ -34,7 +34,7 @@ export default function Preview({ campaignId, layouts, campaignData }) {
       setRedirectUrl(
         `${appClipURL}&shortId=${campaignId}&sourcename=${enviroment.platform}`
       );
-      setShowRedirectionPage(true);
+      // setShowRedirectionPage(true);
     } else {
       //   getLayoutByShortId(campaignId);
     }
