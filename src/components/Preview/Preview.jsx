@@ -57,12 +57,12 @@ export default function Preview({ campaignId, layouts, campaignData }) {
     console.log("variables:", variables);
     if (layout.name === "landing_screen") {
       const isNativeSignupNeeded = variables.find((ele)=>ele.name==="nativeSignInNeeded");
-      setIsNativeSignup(isNativeSignupNeeded.value)
+      setIsNativeSignup(isNativeSignupNeeded?.value??false)
 
     }
     if (layout.name === "splash_screen") {
       const screenDuration = variables.find((ele)=>ele.name==="screen_duration")
-      console.log("screen_duration", screenDuration.value);
+      console.log("screen_duration", screenDuration?.value);
       // setSplashScreenDuration(screenDuration.value)
       console.log("Checking for initial screen");
       const initialLayout = layouts.find((ele) => ele.isInitial === true);
@@ -70,7 +70,7 @@ export default function Preview({ campaignId, layouts, campaignData }) {
         setTimeout(() => {
           router.push(`/${campaignId}/${initialLayout.name}`);
           console.log("time out triggered");
-        }, screenDuration.value?screenDuration.value*1000:2000);
+        }, screenDuration?.value?screenDuration.value*1000:2000);
       } else {
         console.log("No initial screen found");
       }
