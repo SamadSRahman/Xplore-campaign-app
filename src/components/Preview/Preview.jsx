@@ -14,7 +14,8 @@ import { uid } from "uid";
 import DivkitRenderer from "../DivkitRenderer/DivkitRenderer";
 import { blankBackgroundJSON } from "@/app/utils";
 import RedirectionPage from "../RedirectionPage/RedirectionPage";
-import Head from "next/head";
+import CameraComponent from "@/customComponent/CameraComponent/CameraComponent";
+
 
 export default function Preview({ campaignId, layouts, campaignData }) {
   const params = useParams();
@@ -28,6 +29,8 @@ export default function Preview({ campaignId, layouts, campaignData }) {
   const enviroment = detectEnvironment();
   const [showPopup, setShowPopup] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
+  const [isNativeSignup, setIsNativeSignup] = useState(false);
+  const [splashScreenDuration, setSplashScreenDuration] = useState(2)
 
   useEffect(() => {
     if (enviroment.deviceType === "mobile" && enviroment.isIOS) {
@@ -50,13 +53,24 @@ export default function Preview({ campaignId, layouts, campaignData }) {
   //   }, [campaignId]);
 
   useEffect(() => {
+    const variables = layout.layoutJSON?.card?.variables;
+    console.log("variables:", variables);
+    if (layout.name === "landing_screen") {
+      const isNativeSignupNeeded = variables.find((ele)=>ele.name==="nativeSignInNeeded");
+      setIsNativeSignup(isNativeSignupNeeded.value)
+
+    }
     if (layout.name === "splash_screen") {
+      const screenDuration = variables.find((ele)=>ele.name==="screen_duration")
+      console.log("screen_duration", screenDuration.value);
+      // setSplashScreenDuration(screenDuration.value)
       console.log("Checking for initial screen");
       const initialLayout = layouts.find((ele) => ele.isInitial === true);
       if (initialLayout) {
         setTimeout(() => {
           router.push(`/${campaignId}/${initialLayout.name}`);
-        }, 1000);
+          console.log("time out triggered");
+        }, screenDuration.value?screenDuration.value*1000:2000);
       } else {
         console.log("No initial screen found");
       }
@@ -174,7 +188,7 @@ export default function Preview({ campaignId, layouts, campaignData }) {
   };
 
   if (isCameraScreen) {
-    // return <CameraComponent />;
+    return <CameraComponent params={params} />;
   }
 
   return (
@@ -184,7 +198,7 @@ export default function Preview({ campaignId, layouts, campaignData }) {
         <RedirectionPage link={redirectUrl} metaData={campaignData} />
       ) : (
         <div className={styles.cardWrapper}>
-          {showPopup && (
+          {(showPopup && isNativeSignup) && (
             <div className={styles.popupOverlay}>
               <div className={styles.popup}>
                 <h2>Sign in with Google</h2>

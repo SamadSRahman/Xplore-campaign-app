@@ -1,31 +1,33 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import styles from './CameraComponent.module.css';
-import CampaignPreview from "../../pages/CampaignPreview/CampaignPreview";
-import useEndUser from "../../lib/utils/useEndUser";
+'use client';
 
-const CameraComponent = () => {
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import styles from './CameraComponent.module.css';
+import Preview from "@/components/Preview/Preview";
+import useEndUser from "@/hooks/useEndUser";
+
+const CameraComponent = ({ params }) => {
   const [isCameraActive, setIsCameraActive] = useState(true);
   const [capturedImage, setCapturedImage] = useState(null);
   const [isCameraScreen, setIsCameraScreen] = useState(true);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
-  const navigate = useNavigate();
-  const {campaignId, screen, shortId} = useParams();
-  const {endUserUpload} = useEndUser()
+  const router = useRouter();
+  const { campaignId, screen, shortId } = params;
+  const { endUserUpload } = useEndUser();
 
   useEffect(() => {
     const openCamera = async () => {
-      localStorage.removeItem("userUploadUrl")
-      if (!isCameraActive) return;
+      localStorage.removeItem("userUploadUrl");
+      if (!isCameraActive || typeof window === 'undefined') return;
 
       try {
         const constraints = {
           video: {
             width: { ideal: 1920 },
             height: { ideal: 1080 },
-            facingMode: "environment" // Prefer back camera on mobile devices
+            facingMode: "environment"
           }
         };
 
@@ -34,8 +36,6 @@ const CameraComponent = () => {
         
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          
-          // Wait for metadata to load
           videoRef.current.onloadedmetadata = () => {
             videoRef.current.play();
           };
@@ -56,46 +56,42 @@ const CameraComponent = () => {
     };
   }, [isCameraActive]);
 
-  useEffect(()=>{
-    if(screen!=="camera_screen"){
-        setIsCameraScreen(false)
+  useEffect(() => {
+    if (screen !== "camera_screen") {
+      setIsCameraScreen(false);
     }
-  },[screen])
+  }, [screen]);
 
   const handleCapture = async () => {
+    console.log("triggered");
+    
     if (!canvasRef.current || !videoRef.current) return;
-
+    console.log("line 69");
     const canvas = canvasRef.current;
     const video = videoRef.current;
 
-    // Stop camera tracks
     if (streamRef.current) {
       const tracks = streamRef.current.getTracks();
       tracks.forEach((track) => track.stop());
     }
 
-    // Ensure video is ready and has dimensions
     if (video.videoWidth === 0 || video.videoHeight === 0) {
       console.error("Video dimensions are not set");
       return;
     }
 
-    // Set canvas size to match video
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
     const context = canvas.getContext("2d");
-    
-    // Clear the canvas first
     context.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Draw the video frame
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Capture and set image
-    const imageDataUrl = canvas.toDataURL("image/jpeg", 0.9); // Use JPEG with 90% quality
+    const imageDataUrl = canvas.toDataURL("image/jpeg", 0.9);
     setCapturedImage(imageDataUrl);
-    localStorage.setItem("imageData", imageDataUrl)
+    localStorage.setItem("imageData", imageDataUrl);
+    console.log("imageData", imageDataUrl);
+
     setIsCameraActive(false);
 
     const base64toBlob = (base64Data) => {
@@ -110,7 +106,6 @@ const CameraComponent = () => {
       return new Blob([byteArray], { type: 'image/jpeg' });
     };
     
-    // Convert Blob to File
     const base64toFile = (base64Data, filename) => {
       const blob = base64toBlob(base64Data);
       return new File([blob], filename, { type: 'image/jpeg' });
@@ -118,26 +113,14 @@ const CameraComponent = () => {
     
     const imageFile = base64toFile(imageDataUrl, `campaign_image_${Date.now()}.jpg`);
 
-   await endUserUpload(imageFile)
-   if(window.location.origin==="https://xplr.live"){
-    navigate(`/${shortId}/contact_us_screen`);
-   }
-   else
-    navigate(`/campaign/${campaignId}/contact_us_screen`);
+    await endUserUpload(imageFile);
+    if (typeof window !== 'undefined' && window.location.origin === "https://xplr.live") {
+      router.push(`/${campaignId}/contact_us_screen`);
+    } 
   };
 
-  // const handleRetake = () => {
-  //   setCapturedImage(null);
-  //   setIsCameraActive(true);
-  // };
-
-  // const handleContinue = () => {
-  //   // Navigate to contact us page
-  //   navigate(`/campaign/${campaignId}/contact_us_screen`);
-  // };
-
-  if(!isCameraScreen){
-    return(<CampaignPreview/>)
+  if (!isCameraScreen) {
+    return <Preview />;
   }
 
   return (
@@ -160,32 +143,9 @@ const CameraComponent = () => {
         </div>
       ) : (
         <div>
-          {/* {capturedImage && (
-            <img 
-              src={capturedImage} 
-              alt="Captured" 
-              className={styles.imagePreview}
-            />
-          )} */}
-          {/* <div className={styles.buttonContainer}>
-            <button 
-              onClick={handleRetake} 
-              className={styles.retakeButton}
-            >
-              Retake
-            </button>
-            <button 
-              onClick={handleContinue} 
-              className={styles.continueButton}
-            >
-              Continue
-            </button>
-          </div> */}
+          <canvas ref={canvasRef} style={{ display: "none" }} />
         </div>
       )}
-      
-      {/* Hidden canvas for capturing images */}
-      <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );
 };
