@@ -71,7 +71,7 @@ export default function RedirectionPage({ link, metaData, isSocial }) {
               alt=""
               hidden={isImageLoaded}
             />
-         
+          
             <div hidden={!isImageLoaded} onClick={handlePlaceHolderClick} className="campaign-card">
               <img
                 src={metaData.image}
