@@ -47,8 +47,9 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
 
     useEffect(() => {
       if (campaignId && !enviroment.isIOS) {
+        const longId = localStorage.getItem("longId")
         postAnalyticData({
-          campaignID: campaignId,
+          campaignID: longId,
           source: enviroment.platform === "browser" ? "other" : enviroment.platform,
         });    
       }
