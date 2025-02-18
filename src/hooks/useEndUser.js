@@ -13,7 +13,7 @@ export default function useEndUser(){
 //     API_BASE_URL = "https://xplr.live/api";
 //   }
 
-  const submitContactForm = async (formData) => {
+  const submitContactForm = async (formData, campaignID) => {
     try {
       // Validate required fields
       // if (!formData.name?.trim()) {

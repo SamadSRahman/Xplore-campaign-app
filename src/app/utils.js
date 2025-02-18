@@ -102,7 +102,17 @@ export async function fetchCampaignData(campaignId) {
       isWebview: platform === 'webview' || ['instagram', 'facebook', 'linkedin', 'twitter'].includes(platform)
     };
   };
+  export function generateRandomId(length = 8) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomId = '';
   
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomId += characters[randomIndex];
+    }
+  
+    return randomId;
+  }
   
 
   export const appClipURL = "https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip";
@@ -123,7 +133,7 @@ export async function fetchCampaignData(campaignId) {
         router.push(`/campaign/${campaignId}/${path}`);
       }
     };
-  
+    
     // Helper function to extract parameters from the URL
     const getParams = (url) => new URLSearchParams(url.split("?")[1]);
   
@@ -136,13 +146,18 @@ export async function fetchCampaignData(campaignId) {
           otherFields[variable] = value;
         }
       });
+      const deviceId =  localStorage.getItem("deviceId");
+      if(!deviceId){
+        const id = generateRandomId()
+        localStorage.setItem("deviceId", id)
+      }
       return {
         name: params.get("userName"),
         email: params.get("email") || "",
         phone: params.get("phone"),
         visitorId: localStorage.getItem("visitorId")||"",
-        deviceId: localStorage.getItem("deviceId")||"",
-        campaignID: campaignId,
+        deviceId: localStorage.getItem("deviceId"),
+        campaignID: shortId,
         otherFields,
       };
     };
