@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom/client";
 import styles from "./DivkitRenderer.module.css";
-
 import { lottieExtensionBuilder } from "@divkitframework/divkit/client";
 import Lottie from "lottie-web/build/player/lottie";
 import { render } from "@divkitframework/divkit/client";
@@ -54,7 +53,9 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
       customElements.define("custom-card", CustomCardElement);
     }
 
-    if (typeof window !== "undefined" && !customElements.get("chatbot-card")) {
+    if (typeof window !== "undefined" && !customElements.get("chatbot-card")) {   
+        console.log("chatbot triggered");
+        
       class ChatbotCardElement extends HTMLElement {
         connectedCallback() {
           const container = document.createElement("div");
@@ -62,7 +63,6 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
           // container.style.padding = "1rem"
           // container.style.backgroundColor = "red"
           // container.style.border = "1px solid blue"
-          container.style.zIndex = "1000"
 
           this.appendChild(container);
           ReactDOM.createRoot(container).render(<ChatBotComponent />);

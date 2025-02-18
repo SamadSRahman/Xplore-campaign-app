@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import styles from "./ChatBotComponent.module.css";
 import InputBox from "./components/InputBox/InputBox";
@@ -11,13 +13,12 @@ import { AiOutlineMessage } from "react-icons/ai";
 import useChatBot from "@/hooks/useChatBot";
 
 
-const ChatBotComponent = () => {
+const ChatBotComponent = ({router}) => {
   const [messages, setMessages] = useState([]);
-  const [showChatBot, setShowChatBot] = useState(false);
+  const [showChatBot, setShowChatBot] = useState(true);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
   const [selectedTab, setSelectedTab] = useState("chat");
   const { postMessage, generatedText } = useChatBot();
-
   const [slideDirection, setSlideDirection] = useState("slide-in");
 
   useEffect(() => {
@@ -109,7 +110,7 @@ const ChatBotComponent = () => {
     <>
       {showChatBot ? (
         <div className={styles.app}>
-          <Header onClose={() => setShowChatBot(false)} />
+          <Header onClose={() => router.back()} />
             {/* <p>{generatedText}</p> */}
           {selectedTab === "chat" ? (
             isFirstSearch ? (

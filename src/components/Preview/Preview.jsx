@@ -15,13 +15,14 @@ import DivkitRenderer from "../DivkitRenderer/DivkitRenderer";
 import { blankBackgroundJSON } from "@/app/utils";
 import RedirectionPage from "../RedirectionPage/RedirectionPage";
 import CameraComponent from "@/customComponent/CameraComponent/CameraComponent";
-
-
+import ChatBotComponent from "@/customComponent/ChatBotComponent/ChatBotComponent";
+import useAnalytics from "@/hooks/useAnalytics";
 export default function Preview({ campaignId, layouts, campaignData, longId }) {
+  
   const params = useParams();
   const router = useRouter();
   localStorage.setItem("longId", longId)
-  //   const { postAnalyticData } = useAnalytics();
+    const { postAnalyticData } = useAnalytics();
   const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
   const [showRedirectionPage, setShowRedirectionPage] = useState(false);
   const [redirectUrl, setRedirectUrl] = useState("");
@@ -31,7 +32,7 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
   const [showPopup, setShowPopup] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
   const [isNativeSignup, setIsNativeSignup] = useState(false);
-  const [splashScreenDuration, setSplashScreenDuration] = useState(2)
+  const [isChatbot, setIsChatbot] = useState(false)
 
   useEffect(() => {
     if (enviroment.deviceType === "mobile" && enviroment.isIOS) {
@@ -44,18 +45,19 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
     }
   }, [campaignId]);
 
-  //   useEffect(() => {
-  //     if (campaignId && !enviroment.isIOS) {
-  //       postAnalyticData({
-  //         campaignID: campaignId,
-  //         source: enviroment.platform === "browser" ? "other" : enviroment.platform,
-  //       });    
-  //     }
-  //   }, [campaignId]);
+    useEffect(() => {
+      if (campaignId && !enviroment.isIOS) {
+        postAnalyticData({
+          campaignID: campaignId,
+          source: enviroment.platform === "browser" ? "other" : enviroment.platform,
+        });    
+      }
+    }, [campaignId]);
 
   useEffect(() => {
     const variables = layout.layoutJSON?.card?.variables;
-    console.log("variables:", variables);
+
+    console.log("layout:", layout);
     if (layout.name === "landing_screen") {
       const isNativeSignupNeeded = variables.find((ele)=>ele.name==="nativeSignInNeeded");
       setIsNativeSignup(isNativeSignupNeeded?.value??false)
@@ -96,8 +98,12 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
           );
         }
       }
-    } else if (screen === "camera_screen") {
+    } 
+    else if (screen === "camera_screen") {
       setIsCameraScreen(true);
+    }
+    else if (screen === "chatbot_screen") {
+      setIsChatbot(true);
     }
 
     if (screen === undefined || screen === "splash_screen") {
@@ -190,6 +196,9 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
 
   if (isCameraScreen) {
     return <CameraComponent params={params} />;
+  }
+  if (isChatbot) {
+    return <ChatBotComponent router={router} />;
   }
 
   return (
