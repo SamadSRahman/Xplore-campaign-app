@@ -5,6 +5,7 @@ import React from "react";
 
 export default async function page({ params }) {
   const { campaignId, screen } = params;
+  
   console.log(campaignId, screen);
   const { campaignData, layouts, longId } = await fetchCampaignData(campaignId);
 

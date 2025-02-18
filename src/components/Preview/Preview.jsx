@@ -46,14 +46,16 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
   }, [campaignId]);
 
     useEffect(() => {
-      if (campaignId && !enviroment.isIOS) {
+      const isAnalyticsPosted = JSON.parse(sessionStorage.getItem("isAnalyticsPosted"))
+      if (campaignId && !enviroment.isIOS && !isAnalyticsPosted) {
         const longId = localStorage.getItem("longId")
         postAnalyticData({
           campaignID: longId,
           source: enviroment.platform === "browser" ? "other" : enviroment.platform,
         });    
+        sessionStorage.setItem("isAnalyticsPosted", JSON.stringify(true))
       }
-    }, [campaignId]);
+    }, []);
 
   useEffect(() => {
     const variables = layout.layoutJSON?.card?.variables;
