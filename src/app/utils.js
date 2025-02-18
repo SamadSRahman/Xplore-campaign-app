@@ -9,9 +9,10 @@ export async function fetchCampaignData(campaignId) {
           // console.log('response:', response.data.campaign.initialLayout.campaign);
           const campaign = response.data.campaign.initialLayout.campaign
           const layouts = response.data.campaign.layouts
-         
+         const longId = response.data.campaign.id;
           
           return {
+            longId,
             campaignData: {
                 title: campaign.name,
                 description: campaign.description,
@@ -151,13 +152,14 @@ export async function fetchCampaignData(campaignId) {
         const id = generateRandomId()
         localStorage.setItem("deviceId", id)
       }
+      const longId = localStorage.getItem("longId")
       return {
         name: params.get("userName"),
         email: params.get("email") || "",
         phone: params.get("phone"),
         visitorId: localStorage.getItem("visitorId")||"",
         deviceId: localStorage.getItem("deviceId"),
-        campaignID: shortId,
+        campaignID: longId,
         otherFields,
       };
     };

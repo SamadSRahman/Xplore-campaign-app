@@ -34,11 +34,13 @@ export default async function CampaignPage({ params }) {
   const { campaignId } = params;
 
   // Fetch campaign data with error handling
-  let campaignData, layouts;
+  let campaignData, layouts, longId;
   try {
     const result = await fetchCampaignData(campaignId);
+    console.log(result)
     campaignData = result.campaignData;
     layouts = result.layouts;
+    longId = result.longId
   } catch (error) {
     console.error("Failed to fetch campaign data:", error);
     notFound();

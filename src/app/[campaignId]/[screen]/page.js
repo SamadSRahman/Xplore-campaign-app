@@ -6,7 +6,7 @@ import React from "react";
 export default async function page({ params }) {
   const { campaignId, screen } = params;
   console.log(campaignId, screen);
-  const { campaignData, layouts } = await fetchCampaignData(campaignId);
+  const { campaignData, layouts, longId } = await fetchCampaignData(campaignId);
 
   if (!campaignData) {
     // If no data is found, you can trigger a 404 page.
@@ -34,7 +34,7 @@ export default async function page({ params }) {
           href="https://appclip.apple.com/id?p=com.xircular.XplorePromote.Clip"
         />
       </head>
-      <Preview campaignId={campaignId} layouts={layouts}  campaignData={campaignData}/>
+      <Preview campaignId={campaignId} layouts={layouts}  campaignData={campaignData} longId={longId}/>
 
      {/* </RootLayout> */}
     </>

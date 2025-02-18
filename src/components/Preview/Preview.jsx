@@ -17,9 +17,10 @@ import RedirectionPage from "../RedirectionPage/RedirectionPage";
 import CameraComponent from "@/customComponent/CameraComponent/CameraComponent";
 
 
-export default function Preview({ campaignId, layouts, campaignData }) {
+export default function Preview({ campaignId, layouts, campaignData, longId }) {
   const params = useParams();
   const router = useRouter();
+  localStorage.setItem("longId", longId)
   //   const { postAnalyticData } = useAnalytics();
   const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
   const [showRedirectionPage, setShowRedirectionPage] = useState(false);
