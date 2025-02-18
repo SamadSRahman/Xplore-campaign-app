@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -143,9 +143,11 @@ const CameraComponent = ({ params }) => {
         </div>
       ) : (
         <div>
-          <canvas ref={canvasRef} style={{ display: "none" }} />
+          {/* Content when camera is inactive */}
         </div>
       )}
+      {/* Canvas is always rendered but hidden */}
+      <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );
 };
