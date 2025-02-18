@@ -114,11 +114,11 @@ const CameraComponent = ({ params }) => {
     const imageFile = base64toFile(imageDataUrl, `campaign_image_${Date.now()}.jpg`);
 
     await endUserUpload(imageFile);
-    if (typeof window !== 'undefined' && window.location.origin === "https://xplr.live") {
       router.push(`/${campaignId}/contact_us_screen`);
-    } 
+    
   };
 
+  
   if (!isCameraScreen) {
     return <Preview />;
   }
