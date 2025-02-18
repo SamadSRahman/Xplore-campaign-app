@@ -1,0 +1,67 @@
+/* ContactUs.module.css */
+.wrapper{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FAFAFA;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: white;
+    color: #808080;
+    max-width: 800px;
+    margin: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  }
+  
+  .title {
+    font-size: 2rem;
+    color: #7654EE;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    color: #808080;
+    margin-bottom: 2rem;
+    text-align: center;
+    max-width: 600px;
+  }
+  
+  .contactCard {
+    width: 95%;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .cardTitle {
+    font-size: 1.2rem;
+    color: #7654EE;
+    margin-bottom: 1rem;
+  }
+  
+  .contactInfo {
+    margin-bottom: 0.5rem;
+    color: #808080;
+  }
+  
+  .emailLink {
+    color: #7654EE;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .emailLink:hover {
+    color: #5a3fcc;
+  }
+  

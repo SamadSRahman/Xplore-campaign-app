@@ -2,14 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-
-// import CameraComponent from "../../customComponent/CameraComponent/CameraComponent";
-
 import styles from "./Preview.module.css";
 import { detectEnvironment, appClipURL, handleBtnClick } from "../../app/utils";
-// import useAnalytics from "../../lib/utils/useAnalytics";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-;
 import { uid } from "uid";
 import DivkitRenderer from "../DivkitRenderer/DivkitRenderer";
 import { blankBackgroundJSON } from "@/app/utils";
@@ -17,12 +12,13 @@ import RedirectionPage from "../RedirectionPage/RedirectionPage";
 import CameraComponent from "@/customComponent/CameraComponent/CameraComponent";
 import ChatBotComponent from "@/customComponent/ChatBotComponent/ChatBotComponent";
 import useAnalytics from "@/hooks/useAnalytics";
+
+
 export default function Preview({ campaignId, layouts, campaignData, longId }) {
-  
   const params = useParams();
   const router = useRouter();
   localStorage.setItem("longId", longId)
-    const { postAnalyticData } = useAnalytics();
+  const { postAnalyticData } = useAnalytics();
   const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
   const [showRedirectionPage, setShowRedirectionPage] = useState(false);
   const [redirectUrl, setRedirectUrl] = useState("");
