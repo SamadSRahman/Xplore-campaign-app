@@ -6,9 +6,9 @@ import './PrivacyPolicy.css';
 const PrivacyPolicy = () => {
   return (
     <div className="privacy-policy">
-      <h1>Xircular Promote: Privacy Policy</h1>
+      <h1>Xplore Promote: Privacy Policy</h1>
       <p><strong>Effective Date:</strong> October 29, 2024</p>
-      <p>Welcome to Xircular Promote! Your privacy is important to us. Here’s a breakdown of how we handle your data:</p>
+      <p>Welcome to Xplore Promote! Your privacy is important to us. Here’s a breakdown of how we handle your data:</p>
 
       <h2>1. Information We Collect</h2>
       <ul>
@@ -46,7 +46,6 @@ const PrivacyPolicy = () => {
       <p>If you have any questions, reach out at:</p>
       <ul>
         <li><strong>Email:</strong> info@xircular.io</li>
-        <li><strong>Phone:</strong> 8951142369</li>
       </ul>
     </div>
   );
