@@ -13,11 +13,10 @@ import CameraComponent from "@/customComponent/CameraComponent/CameraComponent";
 import ChatBotComponent from "@/customComponent/ChatBotComponent/ChatBotComponent";
 import useAnalytics from "@/hooks/useAnalytics";
 
-
 export default function Preview({ campaignId, layouts, campaignData, longId }) {
   const params = useParams();
   const router = useRouter();
-  localStorage.setItem("longId", longId)
+  localStorage.setItem("longId", longId);
   const { postAnalyticData } = useAnalytics();
   const [layout, setLayout] = useState({ layoutJSON: blankBackgroundJSON });
   const [showRedirectionPage, setShowRedirectionPage] = useState(false);
@@ -28,7 +27,8 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
   const [showPopup, setShowPopup] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
   const [isNativeSignup, setIsNativeSignup] = useState(false);
-  const [isChatbot, setIsChatbot] = useState(false)
+  const [isChatbot, setIsChatbot] = useState(false);
+  const [isImageUploading, setIsImageUploading] = useState(false);
 
   useEffect(() => {
     if (enviroment.deviceType === "mobile" && enviroment.isIOS) {
@@ -41,38 +41,47 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
     }
   }, [campaignId]);
 
-    useEffect(() => {
-      const isAnalyticsPosted = JSON.parse(sessionStorage.getItem("isAnalyticsPosted"))
-      if (campaignId && !enviroment.isIOS && !isAnalyticsPosted) {
-        const longId = localStorage.getItem("longId")
-        postAnalyticData({
-          campaignID: longId,
-          source: enviroment.platform === "browser" ? "other" : enviroment.platform,
-        });    
-        sessionStorage.setItem("isAnalyticsPosted", JSON.stringify(true))
-      }
-    }, []);
+  useEffect(() => {
+    const isAnalyticsPosted = JSON.parse(
+      sessionStorage.getItem("isAnalyticsPosted")
+    );
+    if (campaignId && !enviroment.isIOS && !isAnalyticsPosted) {
+      const longId = localStorage.getItem("longId");
+      postAnalyticData({
+        campaignID: longId,
+        source:
+          enviroment.platform === "browser" ? "other" : enviroment.platform,
+      });
+      sessionStorage.setItem("isAnalyticsPosted", JSON.stringify(true));
+    }
+  }, []);
 
   useEffect(() => {
     const variables = layout.layoutJSON?.card?.variables;
 
     console.log("layout:", layout);
     if (layout.name === "landing_screen") {
-      const isNativeSignupNeeded = variables.find((ele)=>ele.name==="nativeSignInNeeded");
-      setIsNativeSignup(isNativeSignupNeeded?.value??false)
-
+      const isNativeSignupNeeded = variables.find(
+        (ele) => ele.name === "nativeSignInNeeded"
+      );
+      setIsNativeSignup(isNativeSignupNeeded?.value ?? false);
     }
     if (layout.name === "splash_screen") {
-      const screenDuration = variables.find((ele)=>ele.name==="screen_duration")
+      const screenDuration = variables.find(
+        (ele) => ele.name === "screen_duration"
+      );
       console.log("screen_duration", screenDuration?.value);
       // setSplashScreenDuration(screenDuration.value)
       console.log("Checking for initial screen");
       const initialLayout = layouts.find((ele) => ele.isInitial === true);
       if (initialLayout) {
-        setTimeout(() => {
-          router.push(`/${campaignId}/${initialLayout.name}`);
-          console.log("time out triggered");
-        }, screenDuration?.value?screenDuration.value*1000:2000);
+        setTimeout(
+          () => {
+            router.push(`/${campaignId}/${initialLayout.name}`);
+            console.log("time out triggered");
+          },
+          screenDuration?.value ? screenDuration.value * 1000 : 2000
+        );
       } else {
         console.log("No initial screen found");
       }
@@ -97,11 +106,9 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
           );
         }
       }
-    } 
-    else if (screen === "camera_screen") {
+    } else if (screen === "camera_screen") {
       setIsCameraScreen(true);
-    }
-    else if (screen === "chatbot_screen") {
+    } else if (screen === "chatbot_screen") {
       setIsChatbot(true);
     }
 
@@ -202,12 +209,11 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
 
   return (
     <div className={styles.container}>
-        
       {showRedirectionPage ? (
         <RedirectionPage link={redirectUrl} metaData={campaignData} />
       ) : (
         <div className={styles.cardWrapper}>
-          {(showPopup && isNativeSignup) && (
+          {showPopup && isNativeSignup && (
             <div className={styles.popupOverlay}>
               <div className={styles.popup}>
                 <h2>Sign in with Google</h2>
@@ -264,12 +270,27 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
               </div>
             </div>
           )}
-          <DivkitRenderer
-            divkitJson={layout.layoutJSON}
-            onClick={(action) =>
-              handleBtnClick(action, router, campaignId, "", layouts)
-            }
-          />
+          <>
+            {isImageUploading && (
+              <div className={styles.spinnerOverlay}>
+                <div className={styles.spinner}></div>
+                <p>Uploading image...</p>
+              </div>
+            )}
+            <DivkitRenderer
+              divkitJson={layout.layoutJSON}
+              onClick={(action) =>
+                handleBtnClick(
+                  action,
+                  router,
+                  campaignId,
+                  "",
+                  layouts,
+                  setIsImageUploading
+                )
+              }
+            />
+          </>
         </div>
       )}
     </div>

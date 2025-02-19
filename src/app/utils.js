@@ -167,8 +167,7 @@ const convertToJpeg = (file) => {
   });
 };
 
-const handleNativeCameraCapture = ( campaignId, nextScreen) => {
- 
+const handleNativeCameraCapture = (router, campaignId, nextScreen, setIsImageUploading) => {
   const input = document.createElement("input");
   input.type = "file";
   input.accept = "image/*";
@@ -178,14 +177,17 @@ const handleNativeCameraCapture = ( campaignId, nextScreen) => {
   input.onchange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-
+    setIsImageUploading(true)
     try {
       // const jpegFile = await convertToJpeg(file);
       await endUserUpload(file); // Upload converted JPEG file
-       // Redirect after success
+      router.push(`/${campaignId}/${nextScreen}`); // Redirect after success
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Image upload failed. Please try again.");
+    }
+    finally{
+      setIsImageUploading(false)
     }
   };
 
@@ -201,7 +203,8 @@ export async function handleBtnClick(
   router,
   shortId,
   campaignId,
-  layouts
+  layouts,
+  setIsImageUploading
 ) {
   console.log("Action clicked:", action);
 
@@ -301,8 +304,7 @@ export async function handleBtnClick(
         const cameraScreenIdentifier =
           cameraParams.get("screen_name") || cameraParams.get("id");
         console.log("next layout", cameraScreenIdentifier);
-        navigateTo(`/${campaignId}/${cameraScreenIdentifier}`);
-        handleNativeCameraCapture( shortId, cameraScreenIdentifier);
+        handleNativeCameraCapture(router, shortId, cameraScreenIdentifier, setIsImageUploading);
         break;
         
       case "chatbot":
