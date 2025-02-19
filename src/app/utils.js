@@ -133,7 +133,67 @@ export const appClipURL =
 export const playStoreURL =
   "https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign";
 
-const { submitContactForm, updateInterestedProduct } = useEndUser();
+const { submitContactForm, updateInterestedProduct, endUserUpload } = useEndUser();
+const convertToJpeg = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const jpegFile = new File([blob], `captured_image_${Date.now()}.jpg`, { type: "image/jpeg" });
+            resolve(jpegFile);
+          } else {
+            reject(new Error("Failed to convert image to JPEG"));
+          }
+        }, "image/jpeg", 0.9);
+      };
+
+      img.onerror = reject;
+      img.src = event.target.result;
+    };
+
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
+const handleNativeCameraCapture = (router) => {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.capture = "environment"; // Opens the rear camera
+  input.style.display = "none";
+
+  input.onchange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const jpegFile = await convertToJpeg(file);
+      await endUserUpload(jpegFile); // Upload converted JPEG file
+      router.push(`/${campaignId}/contact_us_screen`); // Redirect after success
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Image upload failed. Please try again.");
+    }
+  };
+
+  document.body.appendChild(input);
+  input.click();
+  document.body.removeChild(input);
+};
+
+
 
 export async function handleBtnClick(
   action,
@@ -236,7 +296,7 @@ export async function handleBtnClick(
         break;
 
       case "camera":
-        navigateTo("camera_screen");
+        handleNativeCameraCapture(router)
         break;
         
       case "chatbot":

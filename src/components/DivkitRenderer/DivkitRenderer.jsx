@@ -112,7 +112,7 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
         },
       });
     }
-
+    
     return () => {
       if (divkitContainer.current) {
         divkitContainer.current.innerHTML = "";
@@ -121,7 +121,8 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
   }, [divkitJson]);
 
   return (
-    <div id="divkit-root" className={styles.renderDiv} ref={divkitContainer} />
+ <>
+    <div id="divkit-root" className={styles.renderDiv} ref={divkitContainer} /></>
   );
 };
 

@@ -122,9 +122,34 @@ const CameraComponent = ({ params }) => {
   if (!isCameraScreen) {
     return <Preview />;
   }
+  const handleNativeCapture = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setCapturedImage(URL.createObjectURL(file));
+  
+      // Optionally, convert to base64 for upload
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Data = reader.result;
+        localStorage.setItem("imageData", base64Data);
+        endUserUpload(file).then(() => {
+          router.push(`/${campaignId}/contact_us_screen`);
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
 
   return (
     <div className={styles.container}>
+      <input
+  type="file"
+  accept="image/*"
+  capture="environment"
+  onChange={handleNativeCapture}
+  className={styles.fileInput}
+/>
       {isCameraActive ? (
         <div className={styles.videoContainer}>
           <video
