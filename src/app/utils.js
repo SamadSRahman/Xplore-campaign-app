@@ -167,7 +167,8 @@ const convertToJpeg = (file) => {
   });
 };
 
-const handleNativeCameraCapture = (router, campaignId, nextScreen) => {
+const handleNativeCameraCapture = ( campaignId, nextScreen) => {
+ 
   const input = document.createElement("input");
   input.type = "file";
   input.accept = "image/*";
@@ -181,7 +182,7 @@ const handleNativeCameraCapture = (router, campaignId, nextScreen) => {
     try {
       // const jpegFile = await convertToJpeg(file);
       await endUserUpload(file); // Upload converted JPEG file
-      router.push(`/${campaignId}/${nextScreen}`); // Redirect after success
+       // Redirect after success
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Image upload failed. Please try again.");
@@ -300,8 +301,8 @@ export async function handleBtnClick(
         const cameraScreenIdentifier =
           cameraParams.get("screen_name") || cameraParams.get("id");
         console.log("next layout", cameraScreenIdentifier);
-        
-        handleNativeCameraCapture(router, shortId, cameraScreenIdentifier);
+        navigateTo(`/${campaignId}/${cameraScreenIdentifier}`);
+        handleNativeCameraCapture( shortId, cameraScreenIdentifier);
         break;
         
       case "chatbot":
