@@ -181,7 +181,10 @@ const handleNativeCameraCapture = (router, campaignId, nextScreen, setIsImageUpl
     try {
       // const jpegFile = await convertToJpeg(file);
       await endUserUpload(file); // Upload converted JPEG file
-      router.push(`/${campaignId}/${nextScreen}`); // Redirect after success
+      // Redirect after success
+      if(nextScreen){
+         router.push(`/${campaignId}/${nextScreen}`);
+      }
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Image upload failed. Please try again.");
