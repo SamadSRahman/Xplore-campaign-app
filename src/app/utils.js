@@ -8,17 +8,18 @@ export async function fetchCampaignData(campaignId) {
     const response = await axios.get(
       `https://xplr.live/api/v1/viewLayout/${campaignId}`
     );
-    // console.log('response:', response.data.campaign.initialLayout.campaign);
-    const campaign = response.data.campaign.initialLayout.campaign;
-    const layouts = response.data.campaign.layouts;
-    const longId = response.data.campaign.id;
+    console.log('response:', response.data);
+    
+    const campaign = response.data?.campaign?.initialLayout?.campaign;
+    const layouts = response.data.campaign?response.data.campaign.layouts:response.data.profile.layouts;
+    const longId = response?.data?.campaign?.id;
 
     return {
       longId,
       campaignData: {
-        title: campaign.name,
-        description: campaign.description,
-        image: campaign.images[0]?.url, // Handle cases where images may be missing
+        title: campaign?.name,
+        description: campaign?.description,
+        image: campaign?.images[0]?.url, // Handle cases where images may be missing
       },
       layouts, // Ensure `layouts` is properly returned
     };
@@ -134,38 +135,7 @@ export const playStoreURL =
   "https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign";
 
 const { submitContactForm, updateInterestedProduct, endUserUpload } = useEndUser();
-const convertToJpeg = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    
-    reader.onload = (event) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
 
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const jpegFile = new File([blob], `captured_image_${Date.now()}.jpg`, { type: "image/jpeg" });
-            resolve(jpegFile);
-          } else {
-            reject(new Error("Failed to convert image to JPEG"));
-          }
-        }, "image/jpeg", 0.9);
-      };
-
-      img.onerror = reject;
-      img.src = event.target.result;
-    };
-
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-};
 
 const handleNativeCameraCapture = (router, campaignId, nextScreen, setIsImageUploading) => {
   const input = document.createElement("input");
@@ -179,7 +149,7 @@ const handleNativeCameraCapture = (router, campaignId, nextScreen, setIsImageUpl
     if (!file) return;
     setIsImageUploading(true)
     try {
-      // const jpegFile = await convertToJpeg(file);
+      
       await endUserUpload(file); // Upload converted JPEG file
       // Redirect after success
       if(nextScreen){

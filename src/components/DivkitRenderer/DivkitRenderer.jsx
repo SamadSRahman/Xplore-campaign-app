@@ -10,6 +10,8 @@ import "@divkitframework/divkit/dist/client.css";
 import ChatBotComponent from "@/customComponent/ChatBotComponent/ChatBotComponent";
 import Image360Viewer from "@/customComponent/ImageViewer/ImageViewer";
 const DivkitRenderer = ({ divkitJson, onClick }) => {
+ 
+  
   const extensions = new Map();
   extensions.set("lottie", lottieExtensionBuilder(Lottie.loadAnimation));
   const divkitContainer = useRef(null);
@@ -53,30 +55,30 @@ const DivkitRenderer = ({ divkitJson, onClick }) => {
       customElements.define("custom-card", CustomCardElement);
     }
 
-    if (typeof window !== "undefined" && !customElements.get("chatbot-card")) {   
-        console.log("chatbot triggered");
+    // if (typeof window !== "undefined" && !customElements.get("chatbot-card")) {   
+    //     console.log("chatbot triggered");
         
-      class ChatbotCardElement extends HTMLElement {
-        connectedCallback() {
-          const container = document.createElement("div");
-          // container.style.position = "relative"
-          // container.style.padding = "1rem"
-          // container.style.backgroundColor = "red"
-          // container.style.border = "1px solid blue"
+    //   class ChatbotCardElement extends HTMLElement {
+    //     connectedCallback() {
+    //       const container = document.createElement("div");
+    //       // container.style.position = "relative"
+    //       // container.style.padding = "1rem"
+    //       // container.style.backgroundColor = "red"
+    //       // container.style.border = "1px solid blue"
 
-          this.appendChild(container);
-          ReactDOM.createRoot(container).render(<ChatBotComponent />);
-        }
+    //       this.appendChild(container);
+    //       ReactDOM.createRoot(container).render(<ChatBotComponent />);
+    //     }
 
-        disconnectedCallback() {
-          const container = this.firstElementChild;
-          if (container) {
-            ReactDOM.unmountComponentAtNode(container);
-          }
-        }
-      }
-      customElements.define("chatbot-card", ChatbotCardElement);
-    }
+    //     disconnectedCallback() {
+    //       const container = this.firstElementChild;
+    //       if (container) {
+    //         ReactDOM.unmountComponentAtNode(container);
+    //       }
+    //     }
+    //   }
+    //   customElements.define("chatbot-card", ChatbotCardElement);
+    // }
   }, []);
 
   useEffect(() => {

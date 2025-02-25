@@ -57,16 +57,16 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
   }, []);
 
   useEffect(() => {
-    const variables = layout.layoutJSON?.card?.variables;
+    const variables = layout?.layoutJSON?.card?.variables || [];
 
     console.log("layout:", layout);
-    if (layout.name === "landing_screen") {
+    if (layout?.name === "landing_screen") {
       const isNativeSignupNeeded = variables.find(
         (ele) => ele.name === "nativeSignInNeeded"
       );
       setIsNativeSignup(isNativeSignupNeeded?.value ?? false);
     }
-    if (layout.name === "splash_screen") {
+    if (layout?.name === "splash_screen") {
       const screenDuration = variables.find(
         (ele) => ele.name === "screen_duration"
       );
@@ -109,21 +109,30 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
     } else if (screen === "camera_screen") {
       setIsCameraScreen(true);
     } else if (screen === "chatbot_screen") {
+      console.log("chatbot screen detected");
+      
       setIsChatbot(true);
     }
 
     if (screen === undefined || screen === "splash_screen") {
       const splashLayout = layouts.find((ele) => ele.name === "splash_screen");
       if (splashLayout) {
+        console.log("line 108", splashLayout);
+        
         setLayout(splashLayout);
       }
     } else {
       const newLayout = layouts.find((ele) => ele.name === screen);
-      if (!newLayout) {
+      if (!newLayout && screen !== "profile") {
         console.warn(`Layout not found for screen: ${screen}`);
         return;
+      } else {
+        console.log("line 127", layouts[0]);
+
+        setLayout({
+          layoutJSON : layouts[0]});
       }
-      const variables = newLayout.layoutJSON?.card?.variables;
+      const variables = newLayout?.layoutJSON?.card?.variables;
       const googleData = localStorage.getItem("userData");
       const imageData = localStorage.getItem("userUploadUrl");
 
@@ -157,7 +166,11 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
           console.error("Error processing user data:", error);
         }
       }
-      setLayout(newLayout);
+      console.log("new layout", newLayout);
+      if(newLayout){
+        setLayout(newLayout);
+      }
+     
     }
   }, [params.screen, layouts]);
 
@@ -204,8 +217,12 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
     return <CameraComponent params={params} />;
   }
   if (isChatbot) {
+    console.log("chatbot triggered");
+    // return <CameraComponent params={params} />;
     return <ChatBotComponent router={router} />;
   }
+
+  
 
   return (
     <div className={styles.container}>
@@ -278,7 +295,7 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
               </div>
             )}
             <DivkitRenderer
-              divkitJson={layout.layoutJSON}
+              divkitJson={layout?.layoutJSON !== undefined ? layout.layoutJSON : layout}
               onClick={(action) =>
                 handleBtnClick(
                   action,

@@ -50,6 +50,7 @@ export default async function CampaignPage({ params }) {
   if (!campaignData) {
     notFound();
   }
+console.log("line 53", layouts);
 
   // Check if the user is on an iOS device and if they're NOT using Chrome (i.e., not "CriOS")
   const headersList = headers();
@@ -75,6 +76,9 @@ export default async function CampaignPage({ params }) {
     redirectPath = `/${campaignId}/splash_screen`;
   } else if (initialLayout) {
     redirectPath = `/${campaignId}/${initialLayout.name}`;
+  }
+  else{
+    redirectPath = `/${campaignId}/profile`;
   }
 
   // Render the page with a client-side redirect component if needed.
