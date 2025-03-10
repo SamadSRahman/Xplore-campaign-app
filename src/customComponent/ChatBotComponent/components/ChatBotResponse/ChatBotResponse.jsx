@@ -149,6 +149,9 @@ const ChatBotResponse = ({ answer, handleSendMessage, relatedQuestions, summary 
       .replace("}", "")
       .replace("[", "")
       .replace("]", "")
+      .replace(`"`, "")
+      .replace(":", "")
+      
       .trim();
     setDisplayAnswer(cleanedAnswer);
   }, [answer]);
@@ -250,7 +253,7 @@ const ChatBotResponse = ({ answer, handleSendMessage, relatedQuestions, summary 
       
       {/* {summary && <p>{summary}</p>} */}
       <br />
-      {displayAnswer && <p>{finalAnswer}</p>}
+      {displayAnswer && <p>{displayAnswer}</p>}
       {/* Empty element to scroll into view */}
       <div ref={bottomRef}></div>
       <br />

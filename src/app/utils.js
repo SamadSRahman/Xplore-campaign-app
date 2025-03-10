@@ -2,16 +2,16 @@ import useEndUser from "@/hooks/useEndUser";
 import axios from "axios";
 
 export async function fetchCampaignData(campaignId) {
-  // Replace this with your actual API call.
-
   try {
     const response = await axios.get(
       `https://xplr.live/api/v1/viewLayout/${campaignId}`
     );
-    console.log('response:', response.data);
-    
+    console.log("response:", response.data);
+
     const campaign = response.data?.campaign?.initialLayout?.campaign;
-    const layouts = response.data.campaign?response.data.campaign.layouts:response.data.profile.layouts;
+    const layouts = response.data.campaign
+      ? response.data.campaign.layouts
+      : response.data.profile.layouts;
     const longId = response?.data?.campaign?.id;
 
     return {
@@ -134,10 +134,15 @@ export const appClipURL =
 export const playStoreURL =
   "https://play.google.com/store/apps/details?id=com.xircular.xplorecampaign";
 
-const { submitContactForm, updateInterestedProduct, endUserUpload } = useEndUser();
+const { submitContactForm, updateInterestedProduct, endUserUpload } =
+  useEndUser();
 
-
-const handleNativeCameraCapture = (router, campaignId, nextScreen, setIsImageUploading) => {
+const handleNativeCameraCapture = (
+  router,
+  campaignId,
+  nextScreen,
+  setIsImageUploading
+) => {
   const input = document.createElement("input");
   input.type = "file";
   input.accept = "image/*";
@@ -147,20 +152,18 @@ const handleNativeCameraCapture = (router, campaignId, nextScreen, setIsImageUpl
   input.onchange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    setIsImageUploading(true)
+    setIsImageUploading(true);
     try {
-      
       await endUserUpload(file); // Upload converted JPEG file
       // Redirect after success
-      if(nextScreen){
-         router.push(`/${campaignId}/${nextScreen}`);
+      if (nextScreen) {
+        router.push(`/${campaignId}/${nextScreen}`);
       }
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Image upload failed. Please try again.");
-    }
-    finally{
-      setIsImageUploading(false)
+    } finally {
+      setIsImageUploading(false);
     }
   };
 
@@ -169,7 +172,108 @@ const handleNativeCameraCapture = (router, campaignId, nextScreen, setIsImageUpl
   document.body.removeChild(input);
 };
 
-
+async function getWhatsAppOTP(phone, code) {
+  try {
+    const campaignId = localStorage.getItem("longId");
+    const response = await axios.post(
+      `https://xplr.live/api/v1/enduser/auth/whatsapp/getOtp`,
+      {
+        countryCode: code,
+        phone: phone,
+        campaignId: campaignId,
+        // 6289718501
+      }
+    );
+    console.log(response.data);
+    if (response.data.success) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function getSMSOTP(phone, code) {
+  try {
+    const campaignId = localStorage.getItem("longId");
+    const response = await axios.post(
+      `https://xplr.live/api/v1/endUser/auth/sms/getOtp`,
+      {
+        countryCode: code,
+        phone: phone,
+        campaignId: campaignId,
+        // 6289718501
+      }
+    );
+    console.log(response.data);
+    if (response.data.success) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function verifyWhatsAppOTP(otp) {
+  try {
+    const campaignId = localStorage.getItem("longId");
+    const phone = localStorage.getItem("phone");
+    const code = localStorage.getItem("countryCode");
+    const response = await axios.post(
+      `https://xplr.live/api/v1/enduser/auth/whatsapp/verifyOtp`,
+      {
+        countryCode: code,
+        phone: phone,
+        otp: otp,
+        campaignId: campaignId,
+        // 6289718501
+      }
+    );
+    console.log(response.data);
+    if (response.data.success) {
+      localStorage.setItem("endUserToken", response.data.token);
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    if (error.response.data.message === "Invalid OTP") {
+      alert("Invalid OTP");
+    }
+    console.error(error);
+  }
+}
+async function verifySMSOTP(otp) {
+  try {
+    const campaignId = localStorage.getItem("longId");
+    const phone = localStorage.getItem("phone");
+    const code = localStorage.getItem("countryCode");
+    const response = await axios.post(
+      `https://xplr.live/api/v1/enduser/auth/sms/verifyOtp`,
+      {
+        countryCode: code,
+        phone: phone,
+        otp: otp,
+        campaignId: campaignId,
+        // 6289718501
+      }
+    );
+    console.log(response.data);
+    if (response.data.success) {
+      localStorage.setItem("endUserToken", response.data.token);
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    if (error.response.data.message === "Invalid OTP") {
+      alert("Invalid OTP");
+    }
+    console.error(error);
+  }
+}
 
 export async function handleBtnClick(
   action,
@@ -277,9 +381,14 @@ export async function handleBtnClick(
         const cameraScreenIdentifier =
           cameraParams.get("screen_name") || cameraParams.get("id");
         console.log("next layout", cameraScreenIdentifier);
-        handleNativeCameraCapture(router, shortId, cameraScreenIdentifier, setIsImageUploading);
+        handleNativeCameraCapture(
+          router,
+          shortId,
+          cameraScreenIdentifier,
+          setIsImageUploading
+        );
         break;
-        
+
       case "chatbot":
         navigateTo("chatbot_screen");
         break;
@@ -360,6 +469,58 @@ export async function handleBtnClick(
           router.back(); // Go back
         }
         break;
+      case "whatsappOtpIntegration/getOtp": {
+        const phone = action.phone??localStorage.getItem("phone");
+        const countryCode = action.country_code??localStorage.getItem("countryCode");
+        console.log("phone:", phone);
+        console.log("countryCode:", countryCode);
+        localStorage.setItem("phone", phone);
+        localStorage.setItem("countryCode", countryCode);
+        const isOTPSent = await getWhatsAppOTP(phone, countryCode);
+        if (isOTPSent) {
+          alert(`An OTP has been sent to your WhatsApp number ${phone}`);
+          navigateTo("verify_whatsapp_otp_screen");
+        }
+        break;
+      }
+
+      case "whatsappOtpIntegration/verifyOtp": {
+        const url2 = action.url.replace("xplore-promote://", "https://"); // Replace scheme for parsing
+        const parsedUrl2 = new URL(url2);
+        const whatsAppParams2 = new URLSearchParams(parsedUrl2.search);
+        
+        
+        const otp = whatsAppParams2.get("otp");
+        const nextScreen = whatsAppParams2.get("screen_name");
+
+        console.log("otp:", otp);
+        console.log("nextScreen:", nextScreen);
+        const isOTPVerified = await verifyWhatsAppOTP(otp);
+        if (isOTPVerified) {
+          navigateTo(nextScreen ?? "landing_screen");
+        }
+        break;
+      }
+      case "smsIntegration/getOtp": {
+            console.log("phone:", action.phone);
+        console.log("code:", action.country_code);
+       const localPhone =  localStorage.getItem("phone")
+       const localCountryCode = localStorage.getItem("countryCode")
+        const isOTPSent = await getSMSOTP(action.phone??localPhone, action.country_code??localCountryCode);
+        if (isOTPSent) {
+          alert(`An OTP has been sent to your number ${action.phone??localPhone}`);
+          navigateTo("verify_otp_screen");
+        }
+        break;
+      }
+      case "smsIntegration/verifyOtp":{
+        console.log("otp:", action.otp);
+        const isOTPVerified = await verifySMSOTP(action.otp);
+        if (isOTPVerified) {
+          navigateTo(action.next_screen ?? "landing_screen");
+        }
+        break;
+      }
 
       default:
         console.warn("Unknown button action:", btnAction);
