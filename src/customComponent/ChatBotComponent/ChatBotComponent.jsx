@@ -188,7 +188,7 @@ const ChatBotComponent = ({router}) => {
   const [selectedTab, setSelectedTab] = useState("chat");
   const { postMessage, generatedText } = useChatBot();
   const [slideDirection, setSlideDirection] = useState("slide-in");
-console.log("In ChatBotComponent");
+  const chatbotHeader = sessionStorage.getItem("qus_header")
 
 
   useEffect(() => {
@@ -348,7 +348,7 @@ console.log("In ChatBotComponent");
           {selectedTab === "chat" ? (
             isFirstSearch ? (
               <div className={styles.main}>
-                <h2 className={styles.heading}>What do you want to know?</h2>
+                <h2 className={styles.heading}>{chatbotHeader!==null?chatbotHeader:"What do you want to know about?"}</h2>
                 <SearchBar onSearch={handleSearch} />
                 <SampleQuestions onClick={handleSearch} />
               </div>

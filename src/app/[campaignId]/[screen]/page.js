@@ -6,13 +6,17 @@ import React from "react";
 export default async function page({ params }) {
   const { campaignId, screen } = params;
   
-  console.log(campaignId, screen);
-  const { campaignData, layouts, longId } = await fetchCampaignData(campaignId);
+  console.log("line 9",campaignId, screen);
 
+  const { campaignData, layouts, longId, profileData } = await fetchCampaignData(campaignId);
+  console.log("Campaign data", campaignData, profileData);
+  console.log("Profile data", profileData);
+  
+  
   if (!campaignData) {
     // If no data is found, you can trigger a 404 page.
     notFound();
-  }
+  } 
   return (
     <>
      {/* <RootLayout campaignData={campaignData}> */}

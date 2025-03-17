@@ -73,7 +73,7 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
       console.log("screen_duration", screenDuration?.value);
       // setSplashScreenDuration(screenDuration.value)
       console.log("Checking for initial screen");
-      const initialLayout = layouts.find((ele) => ele.isInitial === true);
+      const initialLayout = layouts?.find((ele) => ele.isInitial === true);
       if (initialLayout) {
         setTimeout(
           () => {
@@ -89,8 +89,23 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
   }, [layout]);
 
   useEffect(() => {
-    if (!layouts?.length) return;
+    if (!layouts) return;
     const screen = params.screen;
+    console.log("screen", screen);
+    
+    // Handle the case where layouts is an object (not an array)
+    if (!Array.isArray(layouts)) {
+      console.log("Layouts is an object, not an array");
+      if (screen === "profile") {
+        setLayout({
+          layoutJSON: layouts
+        });
+      }
+      return;
+    }
+
+    // If we reach here, layouts is an array
+    if (!layouts.length) return;
 
     if (screen === "landing_screen") {
       const userData = localStorage.getItem("userData");
@@ -106,28 +121,32 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
           );
         }
       }
-    } else if (screen === "camera_screen") {
+    } 
+    else if(screen === "profile"){
+      console.log("line 111", layouts);
+      setLayout({
+        layoutJSON : layouts});
+    }
+    else if (screen === "camera_screen") {
       setIsCameraScreen(true);
     } else if (screen === "chatbot_screen") {
       console.log("chatbot screen detected");
-      
       setIsChatbot(true);
     }
 
     if (screen === undefined || screen === "splash_screen") {
       const splashLayout = layouts.find((ele) => ele.name === "splash_screen");
       if (splashLayout) {
-        console.log("line 108", splashLayout);
-        
         setLayout(splashLayout);
       }
-    } else {
-      const newLayout = layouts.find((ele) => ele.name === screen);
+    } else if(layouts.length>0) {
+      console.log("reached line 128", layouts);
+      
+      const newLayout = layouts?.find((ele) => ele.name === screen);
       if (!newLayout && screen !== "profile") {
         console.warn(`Layout not found for screen: ${screen}`);
         return;
       } else {
-        console.log("line 127", layouts[0]);
 
         setLayout({
           layoutJSON : layouts[0]});

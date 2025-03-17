@@ -6,9 +6,10 @@ import React from "react";
 
 
 const Header = ({onClose}) => {
+  const chatbotName = sessionStorage.getItem("chatbot_name")
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>Chat Bot</div>
+     <div className={styles.logo}>{chatbotName || "Chatbot"}</div>
       <div className={styles.icons}>
             <MdOutlineClose onClick={onClose}/>
       </div>

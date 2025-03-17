@@ -16,6 +16,9 @@ export async function fetchCampaignData(campaignId) {
 
     return {
       longId,
+      profileData :{
+        layouts:layouts
+      },
       campaignData: {
         title: campaign?.name,
         description: campaign?.description,
@@ -390,6 +393,12 @@ export async function handleBtnClick(
         break;
 
       case "chatbot":
+        const chatbotParams = getParams(action.url)
+        console.log("chatbotParams", chatbotParams.get("chatbot_name"),chatbotParams.get("qus_header") );
+        const chatbotName = chatbotParams.get("chatbot_name")
+        const chatbotHeader = chatbotParams.get("qus_header")
+        sessionStorage.setItem("chatbot_name",chatbotName||"Chatbot" )
+        sessionStorage.setItem("qus_header",chatbotHeader|| "What do you want to know?" )
         navigateTo("chatbot_screen");
         break;
 
@@ -517,7 +526,7 @@ export async function handleBtnClick(
         console.log("otp:", action.otp);
         const isOTPVerified = await verifySMSOTP(action.otp);
         if (isOTPVerified) {
-          navigateTo(action.next_screen ?? "landing_screen");
+          navigateTo(action.screen_name ?? "landing_screen");
         }
         break;
       }
