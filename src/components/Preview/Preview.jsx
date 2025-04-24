@@ -12,6 +12,9 @@ import RedirectionPage from "../RedirectionPage/RedirectionPage";
 import CameraComponent from "@/customComponent/CameraComponent/CameraComponent";
 import ChatBotComponent from "@/customComponent/ChatBotComponent/ChatBotComponent";
 import useAnalytics from "@/hooks/useAnalytics";
+import CheckoutPage from "../CheckoutPage/CheckoutPage";
+import OrderDetails from "@/app/orderStatus/page";
+import ProductScreen from "../ProductScreen/ProductScreen";
 
 export default function Preview({ campaignId, layouts, campaignData, longId }) {
   const params = useParams();
@@ -26,10 +29,12 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
   const enviroment = detectEnvironment();
   const [showPopup, setShowPopup] = useState(false);
   const [isCameraScreen, setIsCameraScreen] = useState(false);
+  const [isCheckoutScreen, setIsCheckoutScreen] = useState(false);
   const [isNativeSignup, setIsNativeSignup] = useState(false);
   const [isChatbot, setIsChatbot] = useState(false);
   const [isImageUploading, setIsImageUploading] = useState(false);
-
+  const [isOrderStatusScreen, setIsOrderStatusScreen] = useState(false)
+  const [isProductScreen, setIsProductScreen] = useState(false)
   useEffect(() => {
     if (enviroment.deviceType === "mobile" && enviroment.isIOS) {
       setRedirectUrl(
@@ -129,9 +134,21 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
     }
     else if (screen === "camera_screen") {
       setIsCameraScreen(true);
-    } else if (screen === "chatbot_screen") {
-      console.log("chatbot screen detected");
+    }
+    else if (screen === "checkout") {
+      setIsCheckoutScreen(true);
+    }
+    
+    else if (screen === "chatbot_screen") {
       setIsChatbot(true);
+    }
+    else if (screen === "product_screen") {
+      console.log("line 146");
+      
+      setIsProductScreen(true);
+    }
+    else if (screen === "orderStatus") {
+      setIsOrderStatusScreen(true);
     }
 
     if (screen === undefined || screen === "splash_screen") {
@@ -201,7 +218,7 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
       const deviceId = localStorage.getItem("deviceId") || uid(8);
 
       const response = await fetch(
-        "https://xplr.live/api/v1/endUser/googleSignin",
+        "https://xplr.live/api/v1/endUser/auth/google/signin",
         {
           method: "POST",
           headers: {
@@ -236,9 +253,16 @@ export default function Preview({ campaignId, layouts, campaignData, longId }) {
     return <CameraComponent params={params} />;
   }
   if (isChatbot) {
-    console.log("chatbot triggered");
-    // return <CameraComponent params={params} />;
     return <ChatBotComponent router={router} />;
+  }
+  if (isCheckoutScreen) {
+    return <CheckoutPage router={router} shortId={campaignId} />;
+  }
+  if (isOrderStatusScreen) {
+    return <OrderDetails router={router} shortId={campaignId}  />;
+  }
+  if (isProductScreen) {
+    return <ProductScreen router={router} shortId={campaignId}  />;
   }
 
   

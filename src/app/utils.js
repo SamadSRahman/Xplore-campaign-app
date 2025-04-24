@@ -1,6 +1,9 @@
 import useEndUser from "@/hooks/useEndUser";
 import axios from "axios";
 
+
+
+
 export async function fetchCampaignData(campaignId) {
   try {
     const response = await axios.get(
@@ -278,6 +281,104 @@ async function verifySMSOTP(otp) {
   }
 }
 
+import { load } from "@cashfreepayments/cashfree-js";
+
+export async function handleCreateOrder(name, price) {
+  const cashfree = await load({
+    mode:"sandbox", //or production
+    // redirectTarget: "_self" 
+});
+
+  const campaignId = localStorage.getItem("longId");
+  const token = localStorage.getItem("endUserToken");
+  console.log("create order triggered");
+  
+  try {
+    // 1. Create order
+    const orderResponse = await axios.post(
+      "https://xplr.live/api/v1/payment/order",
+      {
+        campaignId: campaignId,
+        productDetails: {
+          name: name,
+          price: parseFloat(price),
+          currency: "INR",
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Order created:", orderResponse.data);
+    const orderId = orderResponse.data.data.id;
+    const baseURL = window.location.origin
+    // 2. Call checkout API to get payment session details
+    const checkoutResponse = await axios.post(
+      "https://xplr.live/api/v1/payment/cashfree/checkout",
+      {
+        orderId: orderId,
+        returnUrl: `${baseURL}/paymentSuccess`,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const sessionId = checkoutResponse.data.data.payment_session_id;
+    console.log("Session ID:", sessionId);
+    let checkoutOptions = {
+      paymentSessionId: sessionId,
+      returnUrl:
+        `${baseURL}/paymentSuccess`, // URL to redirect after payment
+    };
+
+
+    // 3. Initialize and open the Cashfree payment popup
+    cashfree.checkout(checkoutOptions).then(function (result) {
+      if (result.error) {
+        alert(result.error);
+      }
+      if (result.redirect) {
+        console.log("redirection");
+        console.log(result);
+      }
+    });
+
+  } catch (error) {
+    console.error("Payment Error:", error);
+  }
+}
+
+const buyProduct = async (productId, variantId) => {
+  const campaignId = localStorage.getItem("longId");
+  try {
+      const response = await axios.post(`https://xplr.live/api/v1/payment/buy-now`,{
+          "campaignId": campaignId,
+          "productId": productId,
+         "variantId": variantId,
+         "quantity":1
+      },
+    {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("endUserToken")}`,
+        },
+    })
+      const { data } = response.data;
+      console.log("Buy now response", data)
+      return true
+  } catch (error) {
+      console.error("Error buying product:", error);
+      return false
+  }
+}
+
 export async function handleBtnClick(
   action,
   router,
@@ -529,6 +630,35 @@ export async function handleBtnClick(
           navigateTo(action.screen_name ?? "landing_screen");
         }
         break;
+      }
+      case "paymentGateway":{
+        const url = action.url.replace("xplore-promote://", "https://"); // Replace scheme for parsing
+        const parsedUrl = new URL(url);
+        const params = new URLSearchParams(parsedUrl.search);
+        const productId = params.get("productId")
+        const variantId = params.get("variantId");
+        localStorage.setItem('product', JSON.stringify({
+          productId:productId,
+          variantId:variantId
+        }))
+
+       const isAvailable = await buyProduct(productId, variantId, campaignId);
+       if(isAvailable){
+        // console.log("checkout?productId="+productId+"&variantId="+variantId);
+        navigateTo("/checkout?productId="+productId+"&variantId="+variantId);
+       }
+       else{
+        alert("Product not available")
+       }
+       break;
+        
+      }
+
+      case "productCard":{
+        console.log("product card triggered", );
+        const id = getParams(action.url).get("id")
+        navigateTo("product_screen?id="+id);
+   
       }
 
       default:

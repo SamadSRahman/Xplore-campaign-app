@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@11labs/client": "^0.0.6",
+    "@cashfreepayments/cashfree-js": "^1.0.5",
     "@divkitframework/divkit": "^31.1.0",
     "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.9",
