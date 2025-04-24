@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 
-export default function OrderDetails({router}) {
-    const searchParams = useSearchParams();
-    const orderId = searchParams.get("orderId");
+// Create a separate client component that uses useSearchParams
+function OrderDetailsContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const orderId = searchParams.get("orderId");
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +15,6 @@ export default function OrderDetails({router}) {
     if (!orderId) return;
     const fetchOrder = async () => {
       try {
-        //https://xplr.live/api/v1/payment/cashfree/order-status?order_id=82a8d90d-898f-4292-b31c-aade7a79332f
         const res = await fetch(`https://xplr.live/api/v1/payment/cashfree/order-status?order_id=${orderId}`);
         const json = await res.json();
         if (json.success) {
@@ -44,6 +45,7 @@ export default function OrderDetails({router}) {
 
   return (
     <div className="container">
+      {/* Your existing JSX code */}
       <h2>Order Summary</h2>
       <div className="status">
         <span className={`badge ${order_status}`}>{order_status.toUpperCase()}</span>
@@ -173,5 +175,14 @@ export default function OrderDetails({router}) {
         }
       `}</style>
     </div>
+  );
+}
+
+// Main component that wraps OrderDetailsContent in a Suspense boundary
+export default function OrderDetails() {
+  return (
+    <Suspense fallback={<div className="container">Loading order details...</div>}>
+      <OrderDetailsContent />
+    </Suspense>
   );
 }
