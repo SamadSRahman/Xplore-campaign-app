@@ -19,7 +19,6 @@ const PrivacyPolicy = () => {
 
       <h2>2. How We Use Your Information</h2>
       <p>Your information helps us provide better services, support, and personalized campaigns. We may also use data for analytics and, with your consent, for marketing purposes.</p>
-
       <h2>3. Sharing Your Information</h2>
       <p>We only share your data when necessary, such as with:</p>
       <ul>
